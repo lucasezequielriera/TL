@@ -2,6 +2,11 @@ html {
   scroll-behavior: smooth;
 }
 
+::selection {
+  background: rgba(164, 124, 233, 0.35);
+  color: var(--mantine-color-slate-9);
+}
+
 body {
   background: #f7f9ff;
 }
@@ -9,6 +14,38 @@ body {
 .site-shell {
   position: relative;
   isolation: isolate;
+}
+
+/* Editorial grain + vignette — sits above bg, below content */
+.site-shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+.site-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 50% 0%,
+    transparent 40%,
+    rgba(248, 251, 255, 0.55) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-shell::after {
+    opacity: 0.25;
+  }
 }
 
 /* Hero: remaining viewport under sticky header, center content vertically */
@@ -30,6 +67,38 @@ body {
     radial-gradient(120% 90% at 5% 5%, rgba(67, 129, 236, 0.22), transparent 52%),
     radial-gradient(120% 100% at 95% 12%, rgba(153, 114, 232, 0.22), transparent 55%),
     linear-gradient(145deg, #f8fbff 0%, #f9f6ff 52%, #f4f8ff 100%);
+}
+
+.site-bg-mesh {
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  background: conic-gradient(
+    from 220deg at 50% 50%,
+    rgba(73, 137, 238, 0.07),
+    rgba(164, 124, 233, 0.09),
+    rgba(98, 134, 242, 0.06),
+    rgba(73, 137, 238, 0.07)
+  );
+  animation: mesh-drift 28s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-bg-mesh {
+    animation: none;
+  }
+}
+
+@keyframes mesh-drift {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(8deg) scale(1.03);
+  }
 }
 
 .site-orb {
@@ -201,4 +270,87 @@ body {
     linear-gradient(140deg, rgba(255, 255, 255, 0.86), rgba(245, 239, 255, 0.78));
   display: grid;
   place-items: center;
+}
+
+/* Button shine sweep (filled + white variant); skipped for WhatsApp FAB */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tl-btn[data-variant="filled"]:not(.wa-floating-btn):not([data-disabled])::after,
+  .tl-btn[data-variant="white"]:not(.wa-floating-btn):not([data-disabled])::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 28%,
+      rgba(255, 255, 255, 0.22) 48%,
+      transparent 68%
+    );
+    transform: translateX(-130%) skewX(-14deg);
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .tl-btn[data-variant="filled"]:not(.wa-floating-btn):not([data-disabled]):hover::after,
+  .tl-btn[data-variant="white"]:not(.wa-floating-btn):not([data-disabled]):hover::after {
+    transform: translateX(130%) skewX(-14deg);
+  }
+}
+
+.wa-floating-btn {
+  overflow: visible !important;
+  animation: wa-float-pulse 3.2s ease-in-out infinite;
+}
+
+.wa-floating-btn::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 2px solid rgba(37, 211, 102, 0.35);
+  animation: wa-ring 3.2s ease-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-floating-btn {
+    animation: none;
+  }
+
+  .wa-floating-btn::before {
+    display: none;
+  }
+}
+
+@keyframes wa-float-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.22),
+      0 0 0 0 rgba(37, 211, 102, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 14px 36px rgba(0, 0, 0, 0.26),
+      0 0 0 10px rgba(37, 211, 102, 0);
+  }
+}
+
+@keyframes wa-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  70%,
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+/* Main content above grain layers */
+.site-shell > *:not(.site-bg):not(.site-bg-mesh) {
+  position: relative;
+  z-index: 1;
 }

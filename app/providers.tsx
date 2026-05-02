@@ -4,7 +4,9 @@ import {
   MantineProvider,
   createTheme,
   rem,
+  type ButtonProps,
   type MantineColorsTuple,
+  type MantineTheme,
 } from "@mantine/core";
 
 const electric: MantineColorsTuple = [
@@ -59,6 +61,90 @@ const slate: MantineColorsTuple = [
   "#0f172a",
 ];
 
+function buttonStyles(theme: MantineTheme, props: ButtonProps) {
+  const variant = props.variant ?? "filled";
+  const color = props.color;
+  const cn = props.className;
+  const isWaFab =
+    (typeof cn === "string" && cn.includes("wa-floating-btn")) ||
+    (Array.isArray(cn) &&
+      cn.some((c) => typeof c === "string" && c.includes("wa-floating-btn")));
+  const isVioletFilled =
+    variant === "filled" &&
+    (color === "violetPop" || color === undefined) &&
+    !isWaFab;
+  const isWhiteFilled = variant === "filled" && color === "white";
+  const isDefault = variant === "default";
+
+  return {
+    root: {
+      fontWeight: 600,
+      letterSpacing: "-0.015em",
+      position: "relative" as const,
+      overflow: "hidden" as const,
+      transition:
+        "transform 0.32s cubic-bezier(0.33, 1.3, 0.64, 1), box-shadow 0.35s ease, filter 0.25s ease, border-color 0.25s ease",
+      "&:not(.wa-floating-btn):hover:not([data-disabled])": {
+        transform: "translateY(-3px)",
+      },
+      "&:not(.wa-floating-btn):active:not([data-disabled])": {
+        transform: "translateY(-1px) scale(0.985)",
+        transitionDuration: "0.12s",
+      },
+      ...(isVioletFilled && {
+        backgroundImage: `linear-gradient(142deg, ${theme.colors.violetPop[6]} 0%, ${theme.colors.violetPop[8]} 48%, ${theme.colors.violetPop[7]} 100%)`,
+        boxShadow:
+          "0 6px 22px rgba(103, 79, 163, 0.42), 0 1px 0 rgba(255, 255, 255, 0.22) inset, 0 0 0 1px rgba(255, 255, 255, 0.12)",
+        border: "1px solid rgba(255, 255, 255, 0.16)",
+        "&:hover:not([data-disabled])": {
+          boxShadow:
+            "0 10px 32px rgba(103, 79, 163, 0.5), 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 0 0 1px rgba(255, 255, 255, 0.18)",
+          filter: "brightness(1.04)",
+        },
+      }),
+      ...(isWhiteFilled && {
+        backgroundColor: "#ffffff",
+        color: theme.colors.violetPop[8],
+        boxShadow:
+          "0 6px 24px rgba(29, 26, 43, 0.22), 0 1px 0 rgba(255, 255, 255, 0.95) inset",
+        border: "1px solid rgba(255, 255, 255, 0.65)",
+        "&:hover:not([data-disabled])": {
+          backgroundColor: "#f6f4ff",
+          color: theme.colors.violetPop[9],
+          borderColor: "rgba(255, 255, 255, 0.9)",
+          boxShadow:
+            "0 10px 34px rgba(29, 26, 43, 0.26), 0 1px 0 rgba(255, 255, 255, 1) inset",
+        },
+      }),
+      ...(isDefault && {
+        borderWidth: rem(1.5),
+        borderColor: "rgba(100, 116, 139, 0.35)",
+        backgroundColor: "rgba(255, 255, 255, 0.72)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        boxShadow: "0 2px 12px rgba(58, 115, 203, 0.08)",
+        "&:hover:not([data-disabled])": {
+          borderColor: "var(--mantine-color-violetPop-4)",
+          backgroundColor: "rgba(255, 255, 255, 0.92)",
+          boxShadow:
+            "0 6px 20px rgba(103, 79, 163, 0.14), 0 0 0 1px rgba(164, 124, 233, 0.12)",
+        },
+      }),
+    },
+    label: {
+      position: "relative" as const,
+      zIndex: 1,
+      ...(isWhiteFilled && { color: "inherit" }),
+    },
+    inner: { position: "relative" as const, zIndex: 1 },
+    section: {
+      position: "relative" as const,
+      zIndex: 1,
+      ...(isWhiteFilled && { color: "inherit" }),
+    },
+  };
+}
+
 const theme = createTheme({
   colors: {
     electric,
@@ -70,17 +156,32 @@ const theme = createTheme({
   fontFamily: "var(--font-manrope), system-ui, sans-serif",
   headings: {
     fontFamily: "var(--font-cormorant), Georgia, serif",
-    fontWeight: "700",
+    fontWeight: "900",
     sizes: {
-      h1: { fontSize: rem(50), lineHeight: "1.0" },
-      h2: { fontSize: rem(36), lineHeight: "1.06" },
-      h3: { fontSize: rem(26), lineHeight: "1.14" },
+      h1: { fontSize: rem(54), lineHeight: "1.0" },
+      h2: { fontSize: rem(40), lineHeight: "1.06" },
+      h3: { fontSize: rem(29), lineHeight: "1.14" },
     },
   },
   defaultRadius: "md",
   components: {
+    Title: {
+      defaultProps: { fw: 900 },
+      styles: {
+        root: {
+          letterSpacing: "-0.03em",
+          WebkitFontSmoothing: "antialiased",
+          WebkitTextStroke: "0.36px currentColor",
+        },
+      },
+    },
     Button: {
-      defaultProps: { radius: "xl" },
+      defaultProps: {
+        radius: "xl",
+        size: "lg",
+        classNames: { root: "tl-btn" },
+      },
+      styles: buttonStyles,
     },
     Paper: {
       defaultProps: {

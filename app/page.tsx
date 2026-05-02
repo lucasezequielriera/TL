@@ -16,20 +16,34 @@ import {
   Stack,
   Text,
   Title,
+  rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBrandWhatsapp, IconPlayerPlayFilled } from "@tabler/icons-react";
+import {
+  IconBrandInstagram,
+  IconBrandWhatsapp,
+  IconCalendarEvent,
+  IconCheck,
+  IconHeartHandshake,
+  IconHelpHexagon,
+  IconMapPin,
+  IconMessageCircleHeart,
+  IconPlayerPlayFilled,
+  IconSparkles,
+  IconStarFilled,
+  IconUsersGroup,
+} from "@tabler/icons-react";
 
 const WHATSAPP_URL = "https://wa.me/5491123663477";
-const WHATSAPP_LABEL = "11 2366-3477";
+const WHATSAPP_FAB_TEXT = "WhatsApp";
+const WHATSAPP_ARIA_PHONE = "11 2366-3477";
 
 const NAV = [
   { label: "La Consultora", href: "#consultora" },
   { label: "Acompañamiento", href: "#acompanamiento" },
   { label: "El Proceso", href: "#proceso" },
-  { label: "Experiencias", href: "#experiencias" },
+  { label: "Testimonios", href: "#testimonios" },
   { label: "FAQ", href: "#faq" },
-  { label: "Turnos", href: "#turnos" },
 ];
 
 const PASOS = [
@@ -103,10 +117,11 @@ function VioletInTitle({
       style={{
         color,
         fontStyle: "italic",
-        fontWeight: 700,
+        fontWeight: 900,
         fontSize: "inherit",
         lineHeight: "inherit",
         fontFamily: "inherit",
+        WebkitTextStroke: "0.28px currentColor",
       }}
     >
       {children}
@@ -134,6 +149,7 @@ export default function Home() {
   return (
     <Box component="main" mih="100vh" className="site-shell">
       <Box className="site-bg" aria-hidden="true">
+        <Box className="site-bg-mesh" aria-hidden="true" />
         <Box className="site-orb site-orb-a" />
         <Box className="site-orb site-orb-b" />
         <Box className="site-orb site-orb-c" />
@@ -147,8 +163,9 @@ export default function Home() {
         style={{
           zIndex: 90,
           borderBottom: "1px solid rgba(80, 70, 120, 0.14)",
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          backdropFilter: "blur(12px)",
+          backgroundColor: "rgba(255, 255, 255, 0.76)",
+          backdropFilter: "blur(14px) saturate(1.05)",
+          WebkitBackdropFilter: "blur(14px) saturate(1.05)",
         }}
       >
         <Container fluid px={{ base: "md", md: "xl" }} py="md">
@@ -199,7 +216,7 @@ export default function Home() {
               <Button
                 component="a"
                 href="#turnos"
-                size="sm"
+                size="md"
                 color="violetPop"
                 radius="xl"
                 visibleFrom="sm"
@@ -232,7 +249,14 @@ export default function Home() {
               {item.label}
             </Anchor>
           ))}
-          <Button component="a" href="#turnos" color="violetPop" onClick={menuHandlers.close}>
+          <Button
+            component="a"
+            href="#turnos"
+            color="violetPop"
+            size="lg"
+            fullWidth
+            onClick={menuHandlers.close}
+          >
             Turnos
           </Button>
         </Stack>
@@ -255,14 +279,28 @@ export default function Home() {
             <Grid.Col span={{ base: 12, md: 7 }}>
               <Stack gap="lg">
                 <Group gap="xs">
-                  <Badge color="electric" variant="light">
+                  <Badge
+                    color="electric"
+                    variant="light"
+                    leftSection={<IconCalendarEvent size={12} />}
+                  >
                     Modalidad virtual
                   </Badge>
-                  <Badge color="violetPop" variant="filled">
+                  <Badge
+                    color="violetPop"
+                    variant="filled"
+                    leftSection={<IconMapPin size={12} />}
+                  >
                     Microcentro, CABA
                   </Badge>
                 </Group>
-                <Title order={1} c="slate.9" maw={620}>
+                <Title
+                  order={1}
+                  c="slate.9"
+                  maw={680}
+                  fz={{ base: rem(56), sm: rem(60), md: rem(66) }}
+                  lh={1.02}
+                >
                   Tu historia no es <VioletInTitle>tu destino.</VioletInTitle>
                 </Title>
                 <Text c="slate.6" lh={1.8} maw={610}>
@@ -270,11 +308,23 @@ export default function Home() {
                   un espacio de escucha para desarrollar tus potenciales personales
                   y mejorar tu bienestar emocional.
                 </Text>
-                <Group gap="sm">
-                  <Button color="violetPop" radius="xl">
+                <Group gap="md" wrap="wrap">
+                  <Button
+                    component="a"
+                    href="#turnos"
+                    color="violetPop"
+                    size="xl"
+                    radius="xl"
+                  >
                     Agendar sesión inicial
                   </Button>
-                  <Button variant="default" radius="xl">
+                  <Button
+                    component="a"
+                    href="#consultora"
+                    variant="default"
+                    size="xl"
+                    radius="xl"
+                  >
                     Ver enfoque
                   </Button>
                 </Group>
@@ -307,7 +357,11 @@ export default function Home() {
       <Box py={{ base: 42, md: 54 }} bg="violetPop.8">
         <Container size="md">
           <Stack align="center" gap="sm">
-            <Badge color="violetPop" variant="light">
+            <Badge
+              color="violetPop"
+              variant="light"
+              leftSection={<IconSparkles size={12} />}
+            >
               El poder está en vos
             </Badge>
             <Title order={3} c="white" ta="center">
@@ -317,7 +371,15 @@ export default function Home() {
             <Text c="violetPop.1" ta="center">
               Tu historia es el comienzo de lo que sigue. Tu voz está lista.
             </Text>
-            <Button color="white" c="violetPop.8" radius="xl" mt="xs">
+            <Button
+              component="a"
+              href="#turnos"
+              color="white"
+              c="violetPop.8"
+              size="xl"
+              radius="xl"
+              mt="xs"
+            >
               Coordinar primera sesión
             </Button>
           </Stack>
@@ -329,14 +391,25 @@ export default function Home() {
           <Grid.Col span={{ base: 12, md: 5 }}>
             <Paper p="lg" radius="xl" withBorder className="soft-frame">
               <Box className="video-placeholder">
-                <Button variant="white" color="violetPop" radius="xl" leftSection={<IconPlayerPlayFilled size={14} />}>
+                <Button
+                  variant="white"
+                  color="violetPop"
+                  size="lg"
+                  radius="xl"
+                  leftSection={<IconPlayerPlayFilled size={18} />}
+                >
                   Ver presentación
                 </Button>
               </Box>
             </Paper>
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 7 }}>
-            <Badge color="violetPop" variant="light" mb="sm">
+            <Badge
+              color="violetPop"
+              variant="light"
+              mb="sm"
+              leftSection={<IconHeartHandshake size={12} />}
+            >
               La consultora
             </Badge>
             <Title order={2} c="slate.9" mb="sm">
@@ -351,9 +424,15 @@ export default function Home() {
             <Grid mt="md" gap="sm">
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <Paper p="md" radius="md" withBorder className="soft-frame">
-                  <Text fw={700} c="slate.8">
-                    Escucha activa
-                  </Text>
+                  <Group gap={6} mb={4}>
+                    <IconMessageCircleHeart
+                      size={15}
+                      color="var(--mantine-color-violetPop-6)"
+                    />
+                    <Text fw={700} c="slate.8">
+                      Escucha activa
+                    </Text>
+                  </Group>
                   <Text size="sm" c="slate.6">
                     Un espacio profesional para vos.
                   </Text>
@@ -361,9 +440,15 @@ export default function Home() {
               </Grid.Col>
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <Paper p="md" radius="md" withBorder className="soft-frame">
-                  <Text fw={700} c="slate.8">
-                    Transformación
-                  </Text>
+                  <Group gap={6} mb={4}>
+                    <IconSparkles
+                      size={15}
+                      color="var(--mantine-color-violetPop-6)"
+                    />
+                    <Text fw={700} c="slate.8">
+                      Transformación
+                    </Text>
+                  </Group>
                   <Text size="sm" c="slate.6">
                     A tu ritmo y con objetivos claros.
                   </Text>
@@ -400,10 +485,10 @@ export default function Home() {
                     fontWeight: 700,
                   }}
                 >
-                  {paso.n}
+                  <IconCheck size={18} />
                 </Box>
                 <Text fw={700} c="slate.8">
-                  {paso.title}
+                  {paso.n}. {paso.title}
                 </Text>
                 <Text size="sm" c="slate.6" ta="center">
                   {paso.text}
@@ -428,9 +513,15 @@ export default function Home() {
           {AREAS.map((item) => (
             <Grid.Col key={item.title} span={{ base: 12, md: 4 }}>
               <Paper p="lg" radius="xl" withBorder className="soft-frame">
-                <Text fw={700} c="slate.8" mb="xs">
-                  {item.title}
-                </Text>
+                <Group gap={7} mb="xs">
+                  <IconUsersGroup
+                    size={15}
+                    color="var(--mantine-color-violetPop-6)"
+                  />
+                  <Text fw={700} c="slate.8">
+                    {item.title}
+                  </Text>
+                </Group>
                 <Text c="slate.6" lh={1.7}>
                   {item.body}
                 </Text>
@@ -440,10 +531,10 @@ export default function Home() {
         </Grid>
       </SectionShell>
 
-      <SectionShell id="experiencias">
+      <SectionShell id="testimonios">
         <Stack align="center" gap="xs" mb="xl">
           <Title order={2} c="slate.9" ta="center">
-            <VioletInTitle>Experiencias</VioletInTitle> de Consultantes
+            <VioletInTitle>Testimonios</VioletInTitle> de Consultantes
           </Title>
           <Text c="slate.6" ta="center">
             Transformaciones impulsadas por un espacio de escucha activa y empática.
@@ -453,9 +544,15 @@ export default function Home() {
           {TESTIMONIOS.map((item) => (
             <Grid.Col key={item.meta} span={{ base: 12, md: 4 }}>
               <Paper p="lg" radius="xl" withBorder className="soft-frame">
-                <Text c="violetPop.6" fw={700} mb="sm">
-                  ★★★★★
-                </Text>
+                <Group gap={4} mb="sm">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <IconStarFilled
+                      key={`${item.meta}-star-${i}`}
+                      size={14}
+                      color="var(--mantine-color-violetPop-6)"
+                    />
+                  ))}
+                </Group>
                 <Text size="sm" c="slate.7" lh={1.75}>
                   {item.quote}
                 </Text>
@@ -471,6 +568,11 @@ export default function Home() {
       <SectionShell id="faq">
         <Stack align="center" gap="xs" mb="xl">
           <Title order={2} c="slate.9" ta="center">
+            <IconHelpHexagon
+              size={20}
+              color="var(--mantine-color-violetPop-6)"
+              style={{ marginRight: 8, verticalAlign: "middle" }}
+            />
             Preguntas <VioletInTitle>Frecuentes</VioletInTitle>
           </Title>
         </Stack>
@@ -501,7 +603,14 @@ export default function Home() {
             <Text c="slate.6" ta="center">
               Empezamos a diseñar tu futuro cuando vos estés lista.
             </Text>
-            <Button color="violetPop" radius="xl" mt="sm">
+            <Button
+              component="a"
+              href="#turnos"
+              color="violetPop"
+              size="xl"
+              radius="xl"
+              mt="sm"
+            >
               Coordinar primera sesión
             </Button>
           </Stack>
@@ -525,7 +634,27 @@ export default function Home() {
               "Redes: @ticonsultorapsicologica",
             ].map((line) => (
               <Paper key={line} p="md" radius="md" withBorder className="soft-frame" mb="sm">
-                <Text c="slate.7">{line}</Text>
+                <Group gap={8}>
+                  {line.startsWith("Modalidad") && (
+                    <IconCalendarEvent
+                      size={15}
+                      color="var(--mantine-color-violetPop-6)"
+                    />
+                  )}
+                  {line.startsWith("Contacto") && (
+                    <IconBrandWhatsapp
+                      size={15}
+                      color="var(--mantine-color-violetPop-6)"
+                    />
+                  )}
+                  {line.startsWith("Redes") && (
+                    <IconBrandInstagram
+                      size={15}
+                      color="var(--mantine-color-violetPop-6)"
+                    />
+                  )}
+                  <Text c="slate.7">{line}</Text>
+                </Group>
               </Paper>
             ))}
           </Grid.Col>
@@ -576,9 +705,10 @@ export default function Home() {
         href={WHATSAPP_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`Abrir WhatsApp ${WHATSAPP_LABEL}`}
-        leftSection={<IconBrandWhatsapp size={22} stroke={1.5} />}
-        size="md"
+        aria-label={`Abrir WhatsApp, número ${WHATSAPP_ARIA_PHONE}`}
+        className="wa-floating-btn"
+        leftSection={<IconBrandWhatsapp size={24} stroke={1.5} />}
+        size="lg"
         radius="xl"
         styles={{
           root: {
@@ -588,13 +718,22 @@ export default function Home() {
             zIndex: 200,
             backgroundColor: "#25D366",
             color: "#fff",
-            boxShadow: "0 10px 28px rgba(0, 0, 0, 0.22)",
-            paddingInline: 18,
-            "&:hover": { backgroundColor: "#20BD5C", color: "#fff" },
+            paddingInline: 22,
+            minHeight: 52,
+            fontWeight: 600,
+            border: "1px solid rgba(255, 255, 255, 0.22)",
+            transition: "transform 0.25s cubic-bezier(0.33, 1.3, 0.64, 1), filter 0.2s ease",
+            "&:hover": {
+              backgroundColor: "#20BD5C",
+              color: "#fff",
+              filter: "brightness(1.05)",
+              transform: "translateY(-3px) scale(1.02)",
+            },
+            "&:active": { transform: "translateY(-1px) scale(0.98)" },
           },
         }}
       >
-        {WHATSAPP_LABEL}
+        {WHATSAPP_FAB_TEXT}
       </Button>
     </Box>
   );
