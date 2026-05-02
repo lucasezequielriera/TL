@@ -165,3 +165,40 @@ body {
     0 6px 24px rgba(58, 115, 203, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 1) !important;
 }
+
+.hero-profile-card {
+  position: relative;
+  border-color: rgba(111, 86, 166, 0.2) !important;
+  box-shadow: 0 16px 36px rgba(77, 56, 124, 0.12);
+}
+
+.hero-profile-avatar {
+  position: absolute;
+  left: 50%;
+  top: -28px;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  border: 3px solid var(--mantine-color-violetPop-4);
+  background: #fff;
+}
+
+.soft-frame {
+  border-color: rgba(111, 86, 166, 0.18) !important;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 6px 18px rgba(77, 56, 124, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.video-placeholder {
+  min-height: 280px;
+  border-radius: 16px;
+  border: 1px solid rgba(111, 86, 166, 0.16);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(201, 183, 245, 0.2), transparent 45%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.86), rgba(245, 239, 255, 0.78));
+  display: grid;
+  place-items: center;
+}
