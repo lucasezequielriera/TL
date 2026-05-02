@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, Sora } from "next/font/google";
+import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
+import "@mantine/core/styles.css";
 import "./globals.css";
+import { Providers } from "./providers";
 
-const sora = Sora({
-  variable: "--font-sora",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const dmSerif = DM_Serif_Display({
-  variable: "--font-dm-serif",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,9 +31,15 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${sora.variable} ${dmSerif.variable} h-full antialiased`}
+      className={`${manrope.variable} ${cormorant.variable}`}
+      {...mantineHtmlProps}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <head>
+        <ColorSchemeScript defaultColorScheme="light" />
+      </head>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
