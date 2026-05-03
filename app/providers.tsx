@@ -78,6 +78,7 @@ function buttonStyles(theme: MantineTheme, props: ButtonProps) {
 
   return {
     root: {
+      fontSize: rem(15.5),
       fontWeight: 600,
       letterSpacing: "-0.015em",
       position: "relative" as const,
@@ -85,21 +86,33 @@ function buttonStyles(theme: MantineTheme, props: ButtonProps) {
       transition:
         "transform 0.32s cubic-bezier(0.33, 1.3, 0.64, 1), box-shadow 0.35s ease, filter 0.25s ease, border-color 0.25s ease",
       "&:not(.wa-floating-btn):hover:not([data-disabled])": {
-        transform: "translateY(-3px)",
+        transform: "translateY(-2px)",
       },
       "&:not(.wa-floating-btn):active:not([data-disabled])": {
         transform: "translateY(-1px) scale(0.985)",
         transitionDuration: "0.12s",
       },
       ...(isVioletFilled && {
-        backgroundImage: `linear-gradient(142deg, ${theme.colors.violetPop[6]} 0%, ${theme.colors.violetPop[8]} 48%, ${theme.colors.violetPop[7]} 100%)`,
+        backgroundImage: `linear-gradient(
+          168deg,
+          ${theme.colors.violetPop[5]} 0%,
+          ${theme.colors.violetPop[6]} 42%,
+          ${theme.colors.violetPop[7]} 100%
+        )`,
+        border: "1px solid rgba(255, 255, 255, 0.14)",
         boxShadow:
-          "0 6px 22px rgba(103, 79, 163, 0.42), 0 1px 0 rgba(255, 255, 255, 0.22) inset, 0 0 0 1px rgba(255, 255, 255, 0.12)",
-        border: "1px solid rgba(255, 255, 255, 0.16)",
+          "0 1px 0 rgba(255, 255, 255, 0.14) inset, 0 -1px 0 rgba(45, 30, 75, 0.08) inset, 0 6px 24px -4px rgba(79, 52, 120, 0.2), 0 2px 6px -2px rgba(103, 79, 163, 0.12)",
         "&:hover:not([data-disabled])": {
+          backgroundImage: `linear-gradient(
+            168deg,
+            ${theme.colors.violetPop[6]} 0%,
+            ${theme.colors.violetPop[7]} 55%,
+            ${theme.colors.violetPop[8]} 100%
+          )`,
+          border: "1px solid rgba(255, 255, 255, 0.2)",
           boxShadow:
-            "0 10px 32px rgba(103, 79, 163, 0.5), 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 0 0 1px rgba(255, 255, 255, 0.18)",
-          filter: "brightness(1.04)",
+            "0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(45, 30, 75, 0.06) inset, 0 10px 32px -6px rgba(79, 52, 120, 0.26), 0 4px 12px -2px rgba(103, 79, 163, 0.14)",
+          filter: "brightness(1.015) saturate(1.03)",
         },
       }),
       ...(isWhiteFilled && {
@@ -178,7 +191,7 @@ const theme = createTheme({
     Button: {
       defaultProps: {
         radius: "xl",
-        size: "lg",
+        size: "md",
         classNames: { root: "tl-btn" },
       },
       styles: buttonStyles,

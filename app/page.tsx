@@ -19,13 +19,13 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 import {
   IconBrandInstagram,
   IconBrandWhatsapp,
   IconCalendarEvent,
-  IconCheck,
   IconHeartHandshake,
-  IconHelpHexagon,
+  IconLeaf,
   IconMapPin,
   IconMessageCircleHeart,
   IconPlayerPlayFilled,
@@ -38,12 +38,37 @@ const WHATSAPP_URL = "https://wa.me/5491123663477";
 const WHATSAPP_FAB_TEXT = "WhatsApp";
 const WHATSAPP_ARIA_PHONE = "11 2366-3477";
 
+/** URL del evento Calendly (Copiar enlace en Calendly). Ej.: https://calendly.com/usuario/tipo-reunion */
+const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL?.trim() ?? "";
+
 const NAV = [
   { label: "La Consultora", href: "#consultora" },
   { label: "Acompañamiento", href: "#acompanamiento" },
   { label: "El Proceso", href: "#proceso" },
   { label: "Testimonios", href: "#testimonios" },
   { label: "FAQ", href: "#faq" },
+];
+
+const INSTAGRAM_URL = "https://www.instagram.com/ticonsultorapsicologica/";
+
+const CONTACTO_FILAS = [
+  {
+    id: "modalidad",
+    texto: "Modalidad de Atención: Virtual y Presencial",
+    icon: "calendar" as const,
+  },
+  {
+    id: "whatsapp",
+    texto: "Whatsapp: +54 9 11 2366-3477",
+    icon: "whatsapp" as const,
+    href: WHATSAPP_URL,
+  },
+  {
+    id: "instagram",
+    texto: "Instagram: @ticonsultorapsicologica",
+    icon: "instagram" as const,
+    href: INSTAGRAM_URL,
+  },
 ];
 
 const PASOS = [
@@ -116,7 +141,6 @@ function VioletInTitle({
     <span
       style={{
         color,
-        fontStyle: "italic",
         fontWeight: 900,
         fontSize: "inherit",
         lineHeight: "inherit",
@@ -137,7 +161,7 @@ function SectionShell({
   children: React.ReactNode;
 }) {
   return (
-    <Box component="section" id={id} py={{ base: 56, md: 80 }}>
+    <Box component="section" id={id} py={{ base: 56, md: 80 }} className="tl-section">
       <Container size="lg">{children}</Container>
     </Box>
   );
@@ -173,7 +197,7 @@ export default function Home() {
             <Anchor href="#inicio" underline="never" c="slate.9">
               <Group gap="sm" wrap="nowrap">
                 <Image
-                  src="/logo.jpeg"
+                  src="/logo.png"
                   alt="Thompson Lorena"
                   width={142}
                   height={40}
@@ -183,7 +207,7 @@ export default function Home() {
                 <Box visibleFrom="sm">
                   <Text
                     fw={700}
-                    size="md"
+                    size="lg"
                     c="slate.9"
                     style={{ fontFamily: "var(--font-cormorant), serif" }}
                   >
@@ -253,7 +277,7 @@ export default function Home() {
             component="a"
             href="#turnos"
             color="violetPop"
-            size="lg"
+            size="md"
             fullWidth
             onClick={menuHandlers.close}
           >
@@ -284,7 +308,7 @@ export default function Home() {
                     variant="light"
                     leftSection={<IconCalendarEvent size={12} />}
                   >
-                    Modalidad virtual
+                    virtual y presencial
                   </Badge>
                   <Badge
                     color="violetPop"
@@ -298,10 +322,12 @@ export default function Home() {
                   order={1}
                   c="slate.9"
                   maw={680}
-                  fz={{ base: rem(56), sm: rem(60), md: rem(66) }}
-                  lh={1.02}
+                  fz={{ base: rem(58), sm: rem(64), md: rem(72) }}
+                  lh={{ base: 1.08, sm: 1.06 }}
                 >
-                  Tu historia no es <VioletInTitle>tu destino.</VioletInTitle>
+                  Tu historia no es
+                  <br />
+                  <VioletInTitle>tu destino.</VioletInTitle>
                 </Title>
                 <Text c="slate.6" lh={1.8} maw={610}>
                   Es el punto de partida para ser quien hoy decidís ser. Te ofrezco
@@ -313,7 +339,7 @@ export default function Home() {
                     component="a"
                     href="#turnos"
                     color="violetPop"
-                    size="xl"
+                    size="lg"
                     radius="xl"
                   >
                     Agendar sesión inicial
@@ -322,7 +348,7 @@ export default function Home() {
                     component="a"
                     href="#consultora"
                     variant="default"
-                    size="xl"
+                    size="lg"
                     radius="xl"
                   >
                     Ver enfoque
@@ -332,8 +358,17 @@ export default function Home() {
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 5 }}>
-              <Paper p="xl" radius="xl" withBorder className="hero-profile-card">
-                <Box className="hero-profile-avatar" />
+              <Paper p="xl" radius="xl" withBorder className="hero-profile-card tl-hero-card">
+                <Box className="hero-profile-avatar">
+                  <Image
+                    src="/icono-lorena.jpg"
+                    alt="Lorena Thompson, consultora psicológica"
+                    fill
+                    sizes="80px"
+                    priority
+                    style={{ objectFit: "cover" }}
+                  />
+                </Box>
                 <Stack gap={4} mt="xl" ta="center">
                   <Text fw={700} size="lg" c="slate.8">
                     Clr. Thompson Lorena
@@ -342,7 +377,7 @@ export default function Home() {
                     Consultora Psicológica
                   </Text>
                 </Stack>
-                <Paper mt="md" p="sm" radius="md" bg="violetPop.0">
+                <Paper mt="md" p="sm" radius="md" className="soft-frame-inner">
                   <Text size="sm" c="slate.6" ta="center">
                     “El día es hoy y el mundo ahora. Empezamos cuando vos lo
                     decidís.”
@@ -354,7 +389,7 @@ export default function Home() {
         </Container>
       </Box>
 
-      <Box py={{ base: 42, md: 54 }} bg="violetPop.8">
+      <Box py={{ base: 42, md: 54 }} bg="violetPop.8" className="tl-band-cta">
         <Container size="md">
           <Stack align="center" gap="sm">
             <Badge
@@ -376,7 +411,7 @@ export default function Home() {
               href="#turnos"
               color="white"
               c="violetPop.8"
-              size="xl"
+              size="lg"
               radius="xl"
               mt="xs"
             >
@@ -389,14 +424,14 @@ export default function Home() {
       <SectionShell id="consultora">
         <Grid gap="xl" align="center">
           <Grid.Col span={{ base: 12, md: 5 }}>
-            <Paper p="lg" radius="xl" withBorder className="soft-frame">
+            <Paper p="lg" radius="xl" withBorder className="soft-frame tl-video-card">
               <Box className="video-placeholder">
                 <Button
                   variant="white"
                   color="violetPop"
-                  size="lg"
+                  size="md"
                   radius="xl"
-                  leftSection={<IconPlayerPlayFilled size={18} />}
+                  leftSection={<IconPlayerPlayFilled size={16} />}
                 >
                   Ver presentación
                 </Button>
@@ -460,7 +495,7 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell id="proceso">
-        <Stack gap="xs" align="center" mb="xl">
+        <Stack gap="xs" align="center" mb="xl" className="tl-section-head">
           <Title order={2} c="slate.9" ta="center">
             Tu <VioletInTitle>proceso</VioletInTitle>, tu{" "}
             <VioletInTitle>ritmo</VioletInTitle>
@@ -469,26 +504,70 @@ export default function Home() {
             Un acompañamiento empático y respetuoso de tus tiempos.
           </Text>
         </Stack>
-        <Grid gap="md">
+        <Box className="proceso-pasos-wrap" pos="relative">
+          <Box className="proceso-pasos-connector proceso-pasos-connector--a" aria-hidden />
+          <Box className="proceso-pasos-connector proceso-pasos-connector--b" aria-hidden />
+          <Box className="proceso-pasos-connector proceso-pasos-connector--c" aria-hidden />
+          <Grid gap="md" className="proceso-pasos-grid">
           {PASOS.map((paso) => (
-            <Grid.Col key={paso.n} span={{ base: 12, sm: 6, md: 3 }}>
-              <Stack align="center" gap={8}>
-                <Box
-                  w={52}
-                  h={52}
-                  style={{
-                    borderRadius: 999,
-                    border: "2px solid var(--mantine-color-violetPop-4)",
-                    display: "grid",
-                    placeItems: "center",
-                    color: "var(--mantine-color-slate-8)",
-                    fontWeight: 700,
-                  }}
-                >
-                  <IconCheck size={18} />
-                </Box>
+            <Grid.Col
+              key={paso.n}
+              span={{ base: 12, sm: 6, md: 3 }}
+              className="proceso-paso-col"
+            >
+              <Stack align="center" gap={8} pos="relative" style={{ zIndex: 1 }}>
+                {paso.n === "4" ? (
+                  <Box
+                    w={52}
+                    h={52}
+                    style={{
+                      borderRadius: 999,
+                      background:
+                        "linear-gradient(145deg, var(--mantine-color-violetPop-5), var(--mantine-color-violetPop-7))",
+                      border: "1px solid rgba(255, 255, 255, 0.28)",
+                      display: "grid",
+                      placeItems: "center",
+                      position: "relative",
+                      zIndex: 2,
+                      boxShadow:
+                        "0 8px 22px rgba(103, 79, 163, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 0 4px rgba(247, 249, 255, 0.96)",
+                    }}
+                  >
+                    <IconLeaf size={22} color="#fff" stroke={1.5} />
+                  </Box>
+                ) : (
+                  <Box
+                    w={52}
+                    h={52}
+                    style={{
+                      borderRadius: 999,
+                      border: "2px solid var(--mantine-color-violetPop-4)",
+                      backgroundColor: "#f4f7fd",
+                      display: "grid",
+                      placeItems: "center",
+                      position: "relative",
+                      zIndex: 2,
+                      boxShadow: "0 0 0 3px rgba(247, 249, 255, 0.95)",
+                    }}
+                  >
+                    <Text
+                      component="span"
+                      fz={20}
+                      fw={700}
+                      lh={1}
+                      c="violetPop.8"
+                      style={{
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
+                        fontVariantNumeric: "tabular-nums",
+                        letterSpacing: "-0.02em",
+                      }}
+                    >
+                      {paso.n}
+                    </Text>
+                  </Box>
+                )}
                 <Text fw={700} c="slate.8">
-                  {paso.n}. {paso.title}
+                  {paso.title}
                 </Text>
                 <Text size="sm" c="slate.6" ta="center">
                   {paso.text}
@@ -496,11 +575,12 @@ export default function Home() {
               </Stack>
             </Grid.Col>
           ))}
-        </Grid>
+          </Grid>
+        </Box>
       </SectionShell>
 
       <SectionShell id="acompanamiento">
-        <Stack align="center" gap="xs" mb="xl">
+        <Stack align="center" gap="xs" mb="xl" className="tl-section-head">
           <Title order={2} c="slate.9" ta="center">
             Áreas de <VioletInTitle>Acompañamiento</VioletInTitle>
           </Title>
@@ -512,13 +592,16 @@ export default function Home() {
         <Grid gap="lg">
           {AREAS.map((item) => (
             <Grid.Col key={item.title} span={{ base: 12, md: 4 }}>
-              <Paper p="lg" radius="xl" withBorder className="soft-frame">
-                <Group gap={7} mb="xs">
-                  <IconUsersGroup
-                    size={15}
-                    color="var(--mantine-color-violetPop-6)"
-                  />
-                  <Text fw={700} c="slate.8">
+              <Paper p="lg" radius="xl" withBorder className="soft-frame area-acomp-card">
+                <Group gap="sm" mb="xs" wrap="nowrap" align="flex-start">
+                  <Box className="area-acomp-card__icon" aria-hidden="true">
+                    <IconUsersGroup
+                      size={17}
+                      color="var(--mantine-color-violetPop-6)"
+                      stroke={1.65}
+                    />
+                  </Box>
+                  <Text fw={700} c="slate.8" style={{ flex: 1, minWidth: 0 }}>
                     {item.title}
                   </Text>
                 </Group>
@@ -532,7 +615,7 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell id="testimonios">
-        <Stack align="center" gap="xs" mb="xl">
+        <Stack align="center" gap="xs" mb="xl" className="tl-section-head">
           <Title order={2} c="slate.9" ta="center">
             <VioletInTitle>Testimonios</VioletInTitle> de Consultantes
           </Title>
@@ -543,7 +626,7 @@ export default function Home() {
         <Grid gap="lg">
           {TESTIMONIOS.map((item) => (
             <Grid.Col key={item.meta} span={{ base: 12, md: 4 }}>
-              <Paper p="lg" radius="xl" withBorder className="soft-frame">
+              <Paper p="lg" radius="xl" withBorder className="soft-frame tl-quote-card">
                 <Group gap={4} mb="sm">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <IconStarFilled
@@ -566,18 +649,23 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell id="faq">
-        <Stack align="center" gap="xs" mb="xl">
+        <Stack align="center" gap="xs" mb="xl" className="tl-section-head">
           <Title order={2} c="slate.9" ta="center">
-            <IconHelpHexagon
-              size={20}
-              color="var(--mantine-color-violetPop-6)"
-              style={{ marginRight: 8, verticalAlign: "middle" }}
-            />
             Preguntas <VioletInTitle>Frecuentes</VioletInTitle>
           </Title>
         </Stack>
         <Container size="sm" px={0}>
-          <Accordion variant="separated" radius="md" chevronPosition="right">
+          <Accordion
+            variant="separated"
+            radius="md"
+            chevronPosition="right"
+            classNames={{
+              item: "tl-faq-item",
+              control: "tl-faq-control",
+              chevron: "tl-faq-chevron",
+              panel: "tl-faq-panel",
+            }}
+          >
             {FAQ_ITEMS.map((item) => (
               <Accordion.Item key={item.q} value={item.q}>
                 <Accordion.Control>
@@ -594,7 +682,7 @@ export default function Home() {
         </Container>
       </SectionShell>
 
-      <Box py={{ base: 56, md: 72 }}>
+      <Box py={{ base: 56, md: 72 }} className="tl-mid-cta">
         <Container size="sm">
           <Stack align="center" gap="xs">
             <Title order={2} c="slate.9" ta="center">
@@ -607,7 +695,7 @@ export default function Home() {
               component="a"
               href="#turnos"
               color="violetPop"
-              size="xl"
+              size="lg"
               radius="xl"
               mt="sm"
             >
@@ -628,32 +716,49 @@ export default function Home() {
               Escribime para coordinar tu primera sesión. Podés contactarme por
               WhatsApp, correo o redes sociales.
             </Text>
-            {[
-              "Modalidad de atención: virtual y presencial",
-              "Contacto directo: +54 9 11 2366-3477",
-              "Redes: @ticonsultorapsicologica",
-            ].map((line) => (
-              <Paper key={line} p="md" radius="md" withBorder className="soft-frame" mb="sm">
-                <Group gap={8}>
-                  {line.startsWith("Modalidad") && (
-                    <IconCalendarEvent
-                      size={15}
-                      color="var(--mantine-color-violetPop-6)"
-                    />
+            {CONTACTO_FILAS.map((row) => (
+              <Paper key={row.id} p="md" radius="md" withBorder className="soft-frame" mb="sm">
+                <Group gap="sm" wrap="nowrap" align="center">
+                  <Box className="area-acomp-card__icon" aria-hidden="true">
+                    {row.icon === "calendar" && (
+                      <IconCalendarEvent
+                        size={17}
+                        color="var(--mantine-color-violetPop-6)"
+                        stroke={1.65}
+                      />
+                    )}
+                    {row.icon === "whatsapp" && (
+                      <IconBrandWhatsapp
+                        size={17}
+                        color="var(--mantine-color-violetPop-6)"
+                        stroke={1.65}
+                      />
+                    )}
+                    {row.icon === "instagram" && (
+                      <IconBrandInstagram
+                        size={17}
+                        color="var(--mantine-color-violetPop-6)"
+                        stroke={1.65}
+                      />
+                    )}
+                  </Box>
+                  {"href" in row && row.href ? (
+                    <Anchor
+                      href={row.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      fw={400}
+                      c="slate.8"
+                      underline="hover"
+                      style={{ flex: 1, minWidth: 0 }}
+                    >
+                      {row.texto}
+                    </Anchor>
+                  ) : (
+                    <Text fw={400} c="slate.8" style={{ flex: 1, minWidth: 0 }}>
+                      {row.texto}
+                    </Text>
                   )}
-                  {line.startsWith("Contacto") && (
-                    <IconBrandWhatsapp
-                      size={15}
-                      color="var(--mantine-color-violetPop-6)"
-                    />
-                  )}
-                  {line.startsWith("Redes") && (
-                    <IconBrandInstagram
-                      size={15}
-                      color="var(--mantine-color-violetPop-6)"
-                    />
-                  )}
-                  <Text c="slate.7">{line}</Text>
                 </Group>
               </Paper>
             ))}
@@ -670,24 +775,60 @@ export default function Home() {
                 </Badge>
               </Group>
               <Box
-                h={360}
                 style={{
+                  minHeight: rem(360),
                   borderRadius: 16,
-                  border: "1px solid var(--mantine-color-slate-2)",
+                  overflow: "hidden",
+                  border: "1px solid rgba(148, 163, 184, 0.35)",
                   background:
-                    "linear-gradient(160deg, rgba(255,255,255,0.95), rgba(243,238,255,0.55))",
-                  display: "grid",
-                  placeItems: "center",
+                    "linear-gradient(165deg, rgba(255,255,255,0.42), rgba(243,238,255,0.32))",
+                  backdropFilter: "blur(12px) saturate(1.06)",
+                  WebkitBackdropFilter: "blur(12px) saturate(1.06)",
+                  boxShadow:
+                    "0 8px 28px rgba(58, 115, 203, 0.09), 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.65)",
                 }}
               >
-                <Text c="slate.5">Mockup de agenda / Calendly</Text>
+                {CALENDLY_URL ? (
+                  <CalendlyEmbed url={CALENDLY_URL} />
+                ) : (
+                  <Box
+                    py="xl"
+                    px="md"
+                    style={{ display: "grid", placeItems: "center", minHeight: rem(360) }}
+                  >
+                    <Stack gap="sm" align="center" maw={440}>
+                      <Text c="slate.5" ta="center" size="sm">
+                        Agregá en la raíz del proyecto un archivo{" "}
+                        <Text span fw={600} fz="xs" ff="monospace">
+                          .env.local
+                        </Text>{" "}
+                        con tu enlace público de Calendly (menú del evento →{" "}
+                        <Text span fw={600}>
+                          Copy link
+                        </Text>
+                        ):
+                      </Text>
+                      <Text
+                        ff="monospace"
+                        fz="xs"
+                        p="xs"
+                        style={{ wordBreak: "break-all" }}
+                        bg="slate.1"
+                        c="slate.7"
+                        w="100%"
+                      >
+                        NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/tu-usuario/tu-evento
+                      </Text>
+                    </Stack>
+                  </Box>
+                )}
               </Box>
             </Paper>
           </Grid.Col>
         </Grid>
       </SectionShell>
 
-      <Box py="xl" bg="#1d1a2b">
+      <Box py="xl" bg="#1d1a2b" className="tl-footer-site">
         <Container size="lg">
           <Stack gap={2}>
             <Text fw={700} c="white">
@@ -707,8 +848,8 @@ export default function Home() {
         rel="noopener noreferrer"
         aria-label={`Abrir WhatsApp, número ${WHATSAPP_ARIA_PHONE}`}
         className="wa-floating-btn"
-        leftSection={<IconBrandWhatsapp size={24} stroke={1.5} />}
-        size="lg"
+        leftSection={<IconBrandWhatsapp size={20} stroke={1.5} />}
+        size="md"
         radius="xl"
         styles={{
           root: {
@@ -718,8 +859,8 @@ export default function Home() {
             zIndex: 200,
             backgroundColor: "#25D366",
             color: "#fff",
-            paddingInline: 22,
-            minHeight: 52,
+            paddingInline: 18,
+            minHeight: 44,
             fontWeight: 600,
             border: "1px solid rgba(255, 255, 255, 0.22)",
             transition: "transform 0.25s cubic-bezier(0.33, 1.3, 0.64, 1), filter 0.2s ease",
