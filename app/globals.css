@@ -1,5 +1,10 @@
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+.tl-page-root {
+  overflow-x: clip;
 }
 
 ::selection {
@@ -346,6 +351,21 @@ body {
   align-content: center;
 }
 
+@media (max-width: 47.99em) {
+  #inicio {
+    --hero-header-gap: 4.5rem;
+    min-height: 0;
+    align-content: start;
+    padding-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 22.5em) {
+  #inicio {
+    --hero-header-gap: 4rem;
+  }
+}
+
 .site-bg {
   position: fixed;
   inset: 0;
@@ -422,6 +442,32 @@ body {
   bottom: 8rem;
   background: rgba(99, 159, 242, 0.28);
   animation-delay: 5s;
+}
+
+@media (max-width: 47.99em) {
+  .site-orb-a {
+    width: 14rem;
+    height: 14rem;
+    left: -4rem;
+    top: 5rem;
+    opacity: 0.38;
+  }
+
+  .site-orb-b {
+    width: 16rem;
+    height: 16rem;
+    right: -5rem;
+    top: 10rem;
+    opacity: 0.36;
+  }
+
+  .site-orb-c {
+    width: 12rem;
+    height: 12rem;
+    left: 50%;
+    bottom: 4rem;
+    opacity: 0.32;
+  }
 }
 
 @keyframes drift {
@@ -643,7 +689,7 @@ body {
 }
 
 .video-placeholder {
-  min-height: 280px;
+  min-height: clamp(200px, 42vw, 280px);
   border-radius: 16px;
   border: 1px solid rgba(111, 86, 166, 0.2);
   background:

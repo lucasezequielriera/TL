@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
   Accordion,
@@ -19,7 +20,21 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { CalendlyEmbed } from "@/components/CalendlyEmbed";
+import { INSTAGRAM_URL, WHATSAPP_URL } from "@/lib/seo";
+
+const CalendlyEmbed = dynamic(
+  () => import("@/components/CalendlyEmbed").then((m) => m.CalendlyEmbed),
+  {
+    ssr: false,
+    loading: () => (
+      <Box py={60} style={{ display: "grid", placeItems: "center" }}>
+        <Text c="slate.5" size="sm">
+          Cargando agenda…
+        </Text>
+      </Box>
+    ),
+  },
+);
 import {
   IconBrandInstagram,
   IconBrandWhatsapp,
@@ -34,7 +49,6 @@ import {
   IconUsersGroup,
 } from "@tabler/icons-react";
 
-const WHATSAPP_URL = "https://wa.me/5491123663477";
 const WHATSAPP_FAB_TEXT = "WhatsApp";
 const WHATSAPP_ARIA_PHONE = "11 2366-3477";
 
@@ -48,8 +62,6 @@ const NAV = [
   { label: "Testimonios", href: "#testimonios" },
   { label: "FAQ", href: "#faq" },
 ];
-
-const INSTAGRAM_URL = "https://www.instagram.com/ticonsultorapsicologica/";
 
 const CONTACTO_FILAS = [
   {
@@ -161,8 +173,10 @@ function SectionShell({
   children: React.ReactNode;
 }) {
   return (
-    <Box component="section" id={id} py={{ base: 56, md: 80 }} className="tl-section">
-      <Container size="lg">{children}</Container>
+    <Box component="section" id={id} py={{ base: 48, sm: 56, md: 80 }} className="tl-section">
+      <Container size="lg" px={{ base: "xs", xs: "sm", md: "md" }}>
+        {children}
+      </Container>
     </Box>
   );
 }
@@ -171,7 +185,7 @@ export default function Home() {
   const [menu, menuHandlers] = useDisclosure(false);
 
   return (
-    <Box component="main" mih="100vh" className="site-shell">
+    <Box component="main" mih="100vh" className="site-shell tl-page-root">
       <Box className="site-bg" aria-hidden="true">
         <Box className="site-bg-mesh" aria-hidden="true" />
         <Box className="site-orb site-orb-a" />
@@ -192,16 +206,27 @@ export default function Home() {
           WebkitBackdropFilter: "blur(14px) saturate(1.05)",
         }}
       >
-        <Container fluid px={{ base: "md", md: "xl" }} py="md">
-          <Group justify="space-between" align="center" wrap="nowrap">
-            <Anchor href="#inicio" underline="never" c="slate.9">
-              <Group gap="sm" wrap="nowrap">
+        <Container fluid px={{ base: "xs", sm: "md", md: "xl" }} py={{ base: "sm", md: "md" }}>
+          <Group justify="space-between" align="center" wrap="nowrap" gap="xs">
+            <Anchor
+              href="#inicio"
+              underline="never"
+              c="slate.9"
+              style={{ minWidth: 0, flex: "1 1 auto" }}
+            >
+              <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
                 <Image
-                  src="/logo.png"
+                  src="/logo.PNG"
                   alt="Thompson Lorena"
                   width={142}
                   height={40}
-                  style={{ height: 40, width: "auto", borderRadius: 8 }}
+                  sizes="(max-width: 480px) 110px, 142px"
+                  style={{
+                    height: "clamp(32px, 8vw, 40px)",
+                    width: "auto",
+                    maxWidth: "min(142px, 38vw)",
+                    borderRadius: 8,
+                  }}
                   priority
                 />
                 <Box visibleFrom="sm">
@@ -220,7 +245,12 @@ export default function Home() {
               </Group>
             </Anchor>
 
-            <Group gap="md" wrap="nowrap" justify="flex-end" style={{ marginLeft: "auto" }}>
+            <Group
+              gap="xs"
+              wrap="nowrap"
+              justify="flex-end"
+              style={{ marginLeft: "auto", flexShrink: 0 }}
+            >
               <Group gap="lg" visibleFrom="md" wrap="nowrap">
                 {NAV.map((item) => (
                   <Anchor
@@ -266,6 +296,7 @@ export default function Home() {
         title="Secciones"
         padding="md"
         hiddenFrom="md"
+        size="min(100%, 20rem)"
       >
         <Stack gap="sm">
           {NAV.map((item) => (
@@ -297,12 +328,12 @@ export default function Home() {
         }
       `}</style>
 
-      <Box id="inicio" py={{ base: 40, md: 56 }}>
-        <Container size="lg">
-          <Grid align="center" gap="xl">
+      <Box id="inicio" py={{ base: 28, sm: 40, md: 56 }} className="tl-hero-section">
+        <Container size="lg" px={{ base: "xs", xs: "sm", md: "md" }}>
+          <Grid align="center" gap={{ base: "md", md: "xl" }}>
             <Grid.Col span={{ base: 12, md: 7 }}>
               <Stack gap="lg">
-                <Group gap="xs">
+                <Group gap="xs" wrap="wrap">
                   <Badge
                     color="electric"
                     variant="light"
@@ -322,19 +353,43 @@ export default function Home() {
                   order={1}
                   c="slate.9"
                   maw={680}
-                  fz={{ base: rem(58), sm: rem(64), md: rem(72) }}
-                  lh={{ base: 1.08, sm: 1.06 }}
+                  w="100%"
+                  fz={{ base: rem(40), xs: rem(46), sm: rem(58), md: rem(72) }}
+                  lh={{ base: 1.1, sm: 1.08, md: 1.06 }}
+                  style={{ textWrap: "balance", overflowWrap: "anywhere" }}
                 >
                   Tu historia no es
                   <br />
                   <VioletInTitle>tu destino.</VioletInTitle>
                 </Title>
-                <Text c="slate.6" lh={1.8} maw={610}>
+                <Text c="slate.6" lh={1.8} maw={610} style={{ overflowWrap: "anywhere" }}>
                   Es el punto de partida para ser quien hoy decidís ser. Te ofrezco
                   un espacio de escucha para desarrollar tus potenciales personales
                   y mejorar tu bienestar emocional.
                 </Text>
-                <Group gap="md" wrap="wrap">
+                <Stack gap="md" w="100%" hiddenFrom="sm">
+                  <Button
+                    component="a"
+                    href="#turnos"
+                    color="violetPop"
+                    size="lg"
+                    radius="xl"
+                    fullWidth
+                  >
+                    Agendar sesión inicial
+                  </Button>
+                  <Button
+                    component="a"
+                    href="#consultora"
+                    variant="default"
+                    size="lg"
+                    radius="xl"
+                    fullWidth
+                  >
+                    Ver enfoque
+                  </Button>
+                </Stack>
+                <Group gap="md" wrap="wrap" visibleFrom="sm">
                   <Button
                     component="a"
                     href="#turnos"
@@ -358,7 +413,13 @@ export default function Home() {
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 5 }}>
-              <Paper p="xl" radius="xl" withBorder className="hero-profile-card tl-hero-card">
+              <Paper
+                p={{ base: "lg", sm: "xl" }}
+                radius="xl"
+                withBorder
+                className="hero-profile-card tl-hero-card"
+                mt={{ base: "xs", md: 0 }}
+              >
                 <Box className="hero-profile-avatar">
                   <Image
                     src="/icono-lorena.jpg"
@@ -389,8 +450,8 @@ export default function Home() {
         </Container>
       </Box>
 
-      <Box py={{ base: 42, md: 54 }} bg="violetPop.8" className="tl-band-cta">
-        <Container size="md">
+      <Box py={{ base: 36, sm: 42, md: 54 }} bg="violetPop.8" className="tl-band-cta">
+        <Container size="md" px={{ base: "xs", sm: "md" }}>
           <Stack align="center" gap="sm">
             <Badge
               color="violetPop"
@@ -399,32 +460,47 @@ export default function Home() {
             >
               El poder está en vos
             </Badge>
-            <Title order={3} c="white" ta="center">
+            <Title
+              order={3}
+              c="white"
+              ta="center"
+              fz={{ base: rem(22), xs: rem(24), sm: rem(27), md: rem(29) }}
+              lh={{ base: 1.25, md: 1.14 }}
+              px={{ base: "xs", sm: 0 }}
+              style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+            >
               ¿Te animás a empezar este camino de{" "}
               <VioletInTitle on="light">reencuentro</VioletInTitle>?
             </Title>
-            <Text c="violetPop.1" ta="center">
+            <Text c="violetPop.1" ta="center" px={{ base: "xs", sm: 0 }} style={{ overflowWrap: "anywhere" }}>
               Tu historia es el comienzo de lo que sigue. Tu voz está lista.
             </Text>
-            <Button
-              component="a"
-              href="#turnos"
-              color="white"
-              c="violetPop.8"
-              size="lg"
-              radius="xl"
-              mt="xs"
-            >
-              Coordinar primera sesión
-            </Button>
+            <Box w="100%" maw={rem(320)} mx="auto" mt="xs">
+              <Button
+                component="a"
+                href="#turnos"
+                color="white"
+                c="violetPop.8"
+                size="lg"
+                radius="xl"
+                fullWidth
+              >
+                Coordinar primera sesión
+              </Button>
+            </Box>
           </Stack>
         </Container>
       </Box>
 
       <SectionShell id="consultora">
-        <Grid gap="xl" align="center">
-          <Grid.Col span={{ base: 12, md: 5 }}>
-            <Paper p="lg" radius="xl" withBorder className="soft-frame tl-video-card">
+        <Grid gap={{ base: "lg", md: "xl" }} align="center">
+          <Grid.Col span={{ base: 12, md: 5 }} order={{ base: 2, md: 1 }}>
+            <Paper
+              p={{ base: "md", sm: "lg" }}
+              radius="xl"
+              withBorder
+              className="soft-frame tl-video-card"
+            >
               <Box className="video-placeholder">
                 <Button
                   variant="white"
@@ -432,13 +508,15 @@ export default function Home() {
                   size="md"
                   radius="xl"
                   leftSection={<IconPlayerPlayFilled size={16} />}
+                  miw={0}
+                  style={{ maxWidth: "min(100%, 18rem)" }}
                 >
                   Ver presentación
                 </Button>
               </Box>
             </Paper>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 7 }}>
+          <Grid.Col span={{ base: 12, md: 7 }} order={{ base: 1, md: 2 }}>
             <Badge
               color="violetPop"
               variant="light"
@@ -447,11 +525,18 @@ export default function Home() {
             >
               La consultora
             </Badge>
-            <Title order={2} c="slate.9" mb="sm">
+            <Title
+              order={2}
+              c="slate.9"
+              mb="sm"
+              fz={{ base: rem(30), xs: rem(34), sm: rem(38), md: rem(40) }}
+              lh={{ base: 1.12, md: 1.06 }}
+              style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+            >
               Acompañamiento profesional desde el{" "}
               <VioletInTitle>counseling.</VioletInTitle>
             </Title>
-            <Text c="slate.6" lh={1.75}>
+            <Text c="slate.6" lh={1.75} style={{ overflowWrap: "anywhere" }}>
               Soy Lorena Thompson, consultora psicológica. Este espacio está pensado
               para acompañarte de forma clara, humana y concreta en tus procesos de
               cambio, vínculos y bienestar emocional.
@@ -495,12 +580,19 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell id="proceso">
-        <Stack gap="xs" align="center" mb="xl" className="tl-section-head">
-          <Title order={2} c="slate.9" ta="center">
+        <Stack gap="xs" align="center" mb="xl" className="tl-section-head" px={{ base: "xs", sm: 0 }}>
+          <Title
+            order={2}
+            c="slate.9"
+            ta="center"
+            fz={{ base: rem(30), xs: rem(34), sm: rem(38), md: rem(40) }}
+            lh={{ base: 1.12, md: 1.06 }}
+            style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+          >
             Tu <VioletInTitle>proceso</VioletInTitle>, tu{" "}
             <VioletInTitle>ritmo</VioletInTitle>
           </Title>
-          <Text c="slate.6" ta="center">
+          <Text c="slate.6" ta="center" style={{ overflowWrap: "anywhere" }}>
             Un acompañamiento empático y respetuoso de tus tiempos.
           </Text>
         </Stack>
@@ -580,19 +672,37 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell id="acompanamiento">
-        <Stack align="center" gap="xs" mb="xl" className="tl-section-head">
-          <Title order={2} c="slate.9" ta="center">
+        <Stack
+          align="center"
+          gap="xs"
+          mb="xl"
+          className="tl-section-head"
+          px={{ base: "xs", sm: 0 }}
+        >
+          <Title
+            order={2}
+            c="slate.9"
+            ta="center"
+            fz={{ base: rem(30), xs: rem(34), sm: rem(38), md: rem(40) }}
+            lh={{ base: 1.12, md: 1.06 }}
+            style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+          >
             Áreas de <VioletInTitle>Acompañamiento</VioletInTitle>
           </Title>
-          <Text c="slate.6" ta="center" maw={700}>
+          <Text c="slate.6" ta="center" maw={700} style={{ overflowWrap: "anywhere" }}>
             Un proceso centrado en el desarrollo personal, enfocado en el presente
             y orientado a la acción y bienestar.
           </Text>
         </Stack>
-        <Grid gap="lg">
+        <Grid gap={{ base: "md", md: "lg" }}>
           {AREAS.map((item) => (
             <Grid.Col key={item.title} span={{ base: 12, md: 4 }}>
-              <Paper p="lg" radius="xl" withBorder className="soft-frame area-acomp-card">
+              <Paper
+                p={{ base: "md", sm: "lg" }}
+                radius="xl"
+                withBorder
+                className="soft-frame area-acomp-card"
+              >
                 <Group gap="sm" mb="xs" wrap="nowrap" align="flex-start">
                   <Box className="area-acomp-card__icon" aria-hidden="true">
                     <IconUsersGroup
@@ -615,18 +725,30 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell id="testimonios">
-        <Stack align="center" gap="xs" mb="xl" className="tl-section-head">
-          <Title order={2} c="slate.9" ta="center">
+        <Stack align="center" gap="xs" mb="xl" className="tl-section-head" px={{ base: "xs", sm: 0 }}>
+          <Title
+            order={2}
+            c="slate.9"
+            ta="center"
+            fz={{ base: rem(30), xs: rem(34), sm: rem(38), md: rem(40) }}
+            lh={{ base: 1.12, md: 1.06 }}
+            style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+          >
             <VioletInTitle>Testimonios</VioletInTitle> de Consultantes
           </Title>
-          <Text c="slate.6" ta="center">
+          <Text c="slate.6" ta="center" style={{ overflowWrap: "anywhere" }}>
             Transformaciones impulsadas por un espacio de escucha activa y empática.
           </Text>
         </Stack>
-        <Grid gap="lg">
+        <Grid gap={{ base: "md", md: "lg" }}>
           {TESTIMONIOS.map((item) => (
             <Grid.Col key={item.meta} span={{ base: 12, md: 4 }}>
-              <Paper p="lg" radius="xl" withBorder className="soft-frame tl-quote-card">
+              <Paper
+                p={{ base: "md", sm: "lg" }}
+                radius="xl"
+                withBorder
+                className="soft-frame tl-quote-card"
+              >
                 <Group gap={4} mb="sm">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <IconStarFilled
@@ -636,7 +758,7 @@ export default function Home() {
                     />
                   ))}
                 </Group>
-                <Text size="sm" c="slate.7" lh={1.75}>
+                <Text size="sm" c="slate.7" lh={1.75} style={{ overflowWrap: "anywhere" }}>
                   {item.quote}
                 </Text>
                 <Text size="xs" c="slate.5" mt="md" fw={600}>
@@ -649,12 +771,19 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell id="faq">
-        <Stack align="center" gap="xs" mb="xl" className="tl-section-head">
-          <Title order={2} c="slate.9" ta="center">
+        <Stack align="center" gap="xs" mb="xl" className="tl-section-head" px={{ base: "xs", sm: 0 }}>
+          <Title
+            order={2}
+            c="slate.9"
+            ta="center"
+            fz={{ base: rem(30), xs: rem(34), sm: rem(38), md: rem(40) }}
+            lh={{ base: 1.12, md: 1.06 }}
+            style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+          >
             Preguntas <VioletInTitle>Frecuentes</VioletInTitle>
           </Title>
         </Stack>
-        <Container size="sm" px={0}>
+        <Container size="sm" px={0} w="100%">
           <Accordion
             variant="separated"
             radius="md"
@@ -669,12 +798,14 @@ export default function Home() {
             {FAQ_ITEMS.map((item) => (
               <Accordion.Item key={item.q} value={item.q}>
                 <Accordion.Control>
-                  <Text fw={600} c="slate.8">
+                  <Text fw={600} c="slate.8" pr="xs" style={{ overflowWrap: "anywhere" }}>
                     {item.q}
                   </Text>
                 </Accordion.Control>
                 <Accordion.Panel>
-                  <Text c="slate.6">{item.a}</Text>
+                  <Text c="slate.6" style={{ overflowWrap: "anywhere" }}>
+                    {item.a}
+                  </Text>
                 </Accordion.Panel>
               </Accordion.Item>
             ))}
@@ -682,43 +813,66 @@ export default function Home() {
         </Container>
       </SectionShell>
 
-      <Box py={{ base: 56, md: 72 }} className="tl-mid-cta">
-        <Container size="sm">
+      <Box py={{ base: 48, sm: 56, md: 72 }} className="tl-mid-cta">
+        <Container size="sm" px={{ base: "xs", sm: "md" }}>
           <Stack align="center" gap="xs">
-            <Title order={2} c="slate.9" ta="center">
+            <Title
+              order={2}
+              c="slate.9"
+              ta="center"
+              fz={{ base: rem(30), xs: rem(34), sm: rem(38), md: rem(40) }}
+              lh={{ base: 1.12, md: 1.06 }}
+              style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+            >
               El momento es <VioletInTitle>ahora</VioletInTitle>
             </Title>
-            <Text c="slate.6" ta="center">
+            <Text c="slate.6" ta="center" style={{ overflowWrap: "anywhere" }}>
               Empezamos a diseñar tu futuro cuando vos estés lista.
             </Text>
-            <Button
-              component="a"
-              href="#turnos"
-              color="violetPop"
-              size="lg"
-              radius="xl"
-              mt="sm"
-            >
-              Coordinar primera sesión
-            </Button>
+            <Box w="100%" maw={rem(320)} mx="auto" mt="sm">
+              <Button
+                component="a"
+                href="#turnos"
+                color="violetPop"
+                size="lg"
+                radius="xl"
+                fullWidth
+              >
+                Coordinar primera sesión
+              </Button>
+            </Box>
           </Stack>
         </Container>
       </Box>
 
       <SectionShell id="turnos">
-        <Grid gap="xl" align="start">
+        <Grid gap={{ base: "lg", md: "xl" }} align="start">
           <Grid.Col span={{ base: 12, md: 5 }}>
-            <Title order={2} c="slate.9" mb="sm">
+            <Title
+              order={2}
+              c="slate.9"
+              mb="sm"
+              fz={{ base: rem(30), xs: rem(34), sm: rem(38), md: rem(40) }}
+              lh={{ base: 1.12, md: 1.06 }}
+              style={{ textWrap: "balance", overflowWrap: "anywhere" }}
+            >
               <VioletInTitle>Contacto</VioletInTitle> y{" "}
               <VioletInTitle>Ubicación</VioletInTitle>
             </Title>
-            <Text c="slate.6" mb="lg">
+            <Text c="slate.6" mb="lg" style={{ overflowWrap: "anywhere" }}>
               Escribime para coordinar tu primera sesión. Podés contactarme por
               WhatsApp, correo o redes sociales.
             </Text>
             {CONTACTO_FILAS.map((row) => (
-              <Paper key={row.id} p="md" radius="md" withBorder className="soft-frame" mb="sm">
-                <Group gap="sm" wrap="nowrap" align="center">
+              <Paper
+                key={row.id}
+                p={{ base: "sm", sm: "md" }}
+                radius="md"
+                withBorder
+                className="soft-frame"
+                mb="sm"
+              >
+                <Group gap="sm" wrap="nowrap" align="flex-start" justify="flex-start">
                   <Box className="area-acomp-card__icon" aria-hidden="true">
                     {row.icon === "calendar" && (
                       <IconCalendarEvent
@@ -765,12 +919,12 @@ export default function Home() {
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 7 }}>
-            <Paper p="lg" radius="xl" withBorder className="soft-frame">
-              <Group justify="space-between" mb="sm">
-                <Text fw={700} c="slate.8">
+            <Paper p={{ base: "md", sm: "lg" }} radius="xl" withBorder className="soft-frame">
+              <Group justify="space-between" align="flex-start" wrap="wrap" gap="sm" mb="sm">
+                <Text fw={700} c="slate.8" maw="100%" style={{ flex: "1 1 12rem", overflowWrap: "anywhere" }}>
                   Agenda tu sesión online
                 </Text>
-                <Badge color="violetPop" variant="filled">
+                <Badge color="violetPop" variant="filled" style={{ flexShrink: 0 }}>
                   Disponible
                 </Badge>
               </Group>
@@ -828,8 +982,8 @@ export default function Home() {
         </Grid>
       </SectionShell>
 
-      <Box py="xl" bg="#1d1a2b" className="tl-footer-site">
-        <Container size="lg">
+      <Box py={{ base: "lg", sm: "xl" }} bg="#1d1a2b" className="tl-footer-site">
+        <Container size="lg" px={{ base: "xs", sm: "md" }}>
           <Stack gap={2}>
             <Text fw={700} c="white">
               Clr. Thompson Lorena

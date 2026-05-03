@@ -38,11 +38,13 @@ export function CalendlyEmbed({ url }: { url: string }) {
       title="Agendar con Calendly"
       src={src}
       width="100%"
-      height={630}
       style={{
         border: 0,
         display: "block",
-        minHeight: 630,
+        width: "100%",
+        maxWidth: "100%",
+        height: "clamp(420px, 72vh, 680px)",
+        minHeight: "min(680px, 72vh)",
         background: "#fff",
       }}
       loading="lazy"
