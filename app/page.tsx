@@ -66,7 +66,7 @@ const NAV = [
 const CONTACTO_FILAS = [
   {
     id: "modalidad",
-    texto: "Modalidad de Atención: Virtual y Presencial",
+    texto: "Modalidad de Atención: Virtual",
     icon: "calendar" as const,
   },
   {
@@ -84,10 +84,10 @@ const CONTACTO_FILAS = [
 ];
 
 const PASOS = [
-  { n: "1", title: "Contacto", text: "Revisión inicial por WhatsApp." },
-  { n: "2", title: "Encuentro", text: "Primera sesión de escucha activa." },
-  { n: "3", title: "Proceso", text: "Trabajo terapéutico con foco concreto." },
-  { n: "4", title: "Transformación", text: "Seguimiento y evolución sostenida." },
+  { n: "1", title: "Contacto", text: "Me escribís por Mensaje Directo o Whatsapp al 11 2368 3477 para agendar tu primera sesión." },
+  { n: "2", title: "Encuentro", text: "Nos encontramos de forma virtual para tu comodidad y así crear un espacio de empatía y conexión mutua." },
+  { n: "3", title: "Proceso", text: "Trabajamos juntos desde el Counseling, a tu propio ritmo, enfocándonos en el presente y tus recursos." },
+  { n: "4", title: "Transformación", text: "Lográs desaprender lo que no sirve, superás bloqueos y comenzás a diseñar quien querés ser." },
 ];
 
 const AREAS = [
@@ -339,7 +339,7 @@ export default function Home() {
                     variant="light"
                     leftSection={<IconCalendarEvent size={12} />}
                   >
-                    virtual y presencial
+                    Modalidad Virtual
                   </Badge>
                   <Badge
                     color="violetPop"
@@ -363,8 +363,8 @@ export default function Home() {
                   <VioletInTitle>tu destino.</VioletInTitle>
                 </Title>
                 <Text c="slate.6" lh={1.8} maw={610} style={{ overflowWrap: "anywhere" }}>
-                  Es el punto de partida para ser quien hoy decidís ser. Te ofrezco
-                  un espacio de escucha para desarrollar tus potenciales personales
+                  Es el punto de partida para ser quien hoy decidas ser. Te ofrezco
+                  un espacio de escucha donde vas a desarrollar tus potenciales personales
                   y mejorar tu bienestar emocional.
                 </Text>
                 <Stack gap="md" w="100%" hiddenFrom="sm">
@@ -440,8 +440,7 @@ export default function Home() {
                 </Stack>
                 <Paper mt="md" p="sm" radius="md" className="soft-frame-inner">
                   <Text size="sm" c="slate.6" ta="center">
-                    “El día es hoy y el mundo ahora. Empezamos cuando vos lo
-                    decidís.”
+                    “El día es HOY y el momento ahora. <br></br>Empezamos cuando vos este lista.”
                   </Text>
                 </Paper>
               </Paper>
@@ -593,7 +592,7 @@ export default function Home() {
             <VioletInTitle>ritmo</VioletInTitle>
           </Title>
           <Text c="slate.6" ta="center" style={{ overflowWrap: "anywhere" }}>
-            Un acompañamiento empático y respetuoso de tus tiempos.
+            Un acompañamiento de escucha, empático y sin juicios.
           </Text>
         </Stack>
         <Box className="proceso-pasos-wrap" pos="relative">
@@ -754,7 +753,7 @@ export default function Home() {
                     <IconStarFilled
                       key={`${item.meta}-star-${i}`}
                       size={14}
-                      color="var(--mantine-color-violetPop-6)"
+                      color="#FACC15"
                     />
                   ))}
                 </Group>
