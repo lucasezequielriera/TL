@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
   Accordion,
@@ -21,20 +20,6 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { INSTAGRAM_URL, WHATSAPP_URL } from "@/lib/seo";
-
-const CalendlyEmbed = dynamic(
-  () => import("@/components/CalendlyEmbed").then((m) => m.CalendlyEmbed),
-  {
-    ssr: false,
-    loading: () => (
-      <Box py={60} style={{ display: "grid", placeItems: "center" }}>
-        <Text c="slate.5" size="sm">
-          Cargando agenda…
-        </Text>
-      </Box>
-    ),
-  },
-);
 import {
   IconBrandInstagram,
   IconBrandWhatsapp,
@@ -51,9 +36,6 @@ import {
 
 const WHATSAPP_FAB_TEXT = "WhatsApp";
 const WHATSAPP_ARIA_PHONE = "11 2366-3477";
-
-/** URL del evento Calendly (Copiar enlace en Calendly). Ej.: https://calendly.com/usuario/tipo-reunion */
-const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL?.trim() ?? "";
 
 const NAV = [
   { label: "La Consultora", href: "#consultora" },
@@ -845,8 +827,8 @@ export default function Home() {
       </Box>
 
       <SectionShell id="turnos">
-        <Grid gap={{ base: "lg", md: "xl" }} align="start">
-          <Grid.Col span={{ base: 12, md: 5 }}>
+        <Grid gap={{ base: "lg", md: "xl" }} align="start" justify="center">
+          <Grid.Col span={{ base: 12, md: 8, lg: 7 }}>
             <Title
               order={2}
               c="slate.9"
@@ -915,68 +897,6 @@ export default function Home() {
                 </Group>
               </Paper>
             ))}
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 12, md: 7 }}>
-            <Paper p={{ base: "md", sm: "lg" }} radius="xl" withBorder className="soft-frame">
-              <Group justify="space-between" align="flex-start" wrap="wrap" gap="sm" mb="sm">
-                <Text fw={700} c="slate.8" maw="100%" style={{ flex: "1 1 12rem", overflowWrap: "anywhere" }}>
-                  Agenda tu sesión online
-                </Text>
-                <Badge color="violetPop" variant="filled" style={{ flexShrink: 0 }}>
-                  Disponible
-                </Badge>
-              </Group>
-              <Box
-                style={{
-                  minHeight: rem(360),
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  border: "1px solid rgba(148, 163, 184, 0.35)",
-                  background:
-                    "linear-gradient(165deg, rgba(255,255,255,0.42), rgba(243,238,255,0.32))",
-                  backdropFilter: "blur(12px) saturate(1.06)",
-                  WebkitBackdropFilter: "blur(12px) saturate(1.06)",
-                  boxShadow:
-                    "0 8px 28px rgba(58, 115, 203, 0.09), 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.65)",
-                }}
-              >
-                {CALENDLY_URL ? (
-                  <CalendlyEmbed url={CALENDLY_URL} />
-                ) : (
-                  <Box
-                    py="xl"
-                    px="md"
-                    style={{ display: "grid", placeItems: "center", minHeight: rem(360) }}
-                  >
-                    <Stack gap="sm" align="center" maw={440}>
-                      <Text c="slate.5" ta="center" size="sm">
-                        Agregá en la raíz del proyecto un archivo{" "}
-                        <Text span fw={600} fz="xs" ff="monospace">
-                          .env.local
-                        </Text>{" "}
-                        con tu enlace público de Calendly (menú del evento →{" "}
-                        <Text span fw={600}>
-                          Copy link
-                        </Text>
-                        ):
-                      </Text>
-                      <Text
-                        ff="monospace"
-                        fz="xs"
-                        p="xs"
-                        style={{ wordBreak: "break-all" }}
-                        bg="slate.1"
-                        c="slate.7"
-                        w="100%"
-                      >
-                        NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/tu-usuario/tu-evento
-                      </Text>
-                    </Stack>
-                  </Box>
-                )}
-              </Box>
-            </Paper>
           </Grid.Col>
         </Grid>
       </SectionShell>
