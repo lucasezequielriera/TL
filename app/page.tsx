@@ -515,7 +515,9 @@ export default function Home() {
               style={{ textWrap: "balance", overflowWrap: "anywhere" }}
             >
               Acompañamiento profesional desde el{" "}
-              <VioletInTitle>counseling.</VioletInTitle>
+              <VioletInTitle>
+                <span style={{ fontSize: "0.84em" }}>COUNSELING.</span>
+              </VioletInTitle>
             </Title>
             <Text c="slate.6" lh={1.75} style={{ overflowWrap: "anywhere" }}>
               Soy Lorena Thompson, consultora psicológica. Este espacio está pensado
