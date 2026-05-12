@@ -28,7 +28,6 @@ import {
   IconLeaf,
   IconMapPin,
   IconMessageCircleHeart,
-  IconPlayerPlayFilled,
   IconSparkles,
   IconStarFilled,
   IconUsersGroup,
@@ -59,7 +58,7 @@ const CONTACTO_FILAS = [
   },
   {
     id: "instagram",
-    texto: "Instagram: @ticonsultorapsicologica",
+    texto: "Instagram: @tlconsultorapsicologica",
     icon: "instagram" as const,
     href: INSTAGRAM_URL,
   },
@@ -107,8 +106,8 @@ const TESTIMONIOS = [
 
 const FAQ_ITEMS = [
   {
-    q: "¿Qué es el counseling o consultoría psicológica?",
-    a: "Es un espacio de acompañamiento profesional para trabajar procesos personales con escucha, claridad y herramientas concretas.",
+    q: "¿Qué es el Counseling o Consultoría Psicológica?",
+    a: "El Counseling es una disciplina que brinda acompañamiento profesional mediante la escucha activa, la reflexión y el apoyo emocional. Se enfoca en personas sanas que buscan superar bloqueos, desarrollar sus potenciales o atravesar procesos de cambio, centrándose siempre en el momento presente ('El poder de transformación está en el HOY')",
   },
   {
     q: "¿Cómo es la modalidad de las sesiones?",
@@ -116,7 +115,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "¿Cuánto dura el proceso de acompañamiento?",
-    a: "Cada proceso es único. Se define en conjunto y se revisa periódicamente según avances.",
+    a: "El tiempo de acompañamiento es único para cada persona. Mi filosofía de trabajo se basa en la premisa 'Tu proceso, tu ritmo'. No hay fórmulas ríidas, trabajaremos juntos el tiempo que necesites para potenciar tus recursos y alcanzar el bienestar que buscás.",
   },
 ];
 
@@ -422,7 +421,7 @@ export default function Home() {
                 </Stack>
                 <Paper mt="md" p="sm" radius="md" className="soft-frame-inner">
                   <Text size="sm" c="slate.6" ta="center">
-                    “El día es HOY y el momento ahora. <br></br>Empezamos cuando vos este lista.”
+                    “El día es <strong>HOY</strong> y el <strong>MOMENTO</strong> ahora. <br></br>Empezamos cuando vos estes lista.”
                   </Text>
                 </Paper>
               </Paper>
@@ -477,23 +476,32 @@ export default function Home() {
         <Grid gap={{ base: "lg", md: "xl" }} align="center">
           <Grid.Col span={{ base: 12, md: 5 }} order={{ base: 2, md: 1 }}>
             <Paper
-              p={{ base: "md", sm: "lg" }}
+              p={{ base: "md", md: "lg" }}
               radius="xl"
               withBorder
               className="soft-frame tl-video-card"
+              style={{ overflow: "hidden" }}
             >
-              <Box className="video-placeholder">
-                <Button
-                  variant="white"
-                  color="violetPop"
-                  size="md"
-                  radius="xl"
-                  leftSection={<IconPlayerPlayFilled size={16} />}
-                  miw={0}
-                  style={{ maxWidth: "min(100%, 18rem)" }}
-                >
-                  Ver presentación
-                </Button>
+              <Box
+                pos="relative"
+                w="100%"
+                mx="auto"
+                maw={{ base: rem(240), sm: rem(260), md: rem(280) }}
+                style={{
+                  aspectRatio: "3 / 4",
+                  minHeight: rem(200),
+                  borderRadius: rem(14),
+                  overflow: "hidden",
+                  boxShadow: "0 4px 20px rgba(103, 79, 163, 0.08)",
+                }}
+              >
+                <Image
+                  src="/icono-lorena.jpg"
+                  alt="Lorena Thompson, consultora psicológica"
+                  fill
+                  sizes="(max-width: 768px) 260px, 280px"
+                  style={{ objectFit: "cover" }}
+                />
               </Box>
             </Paper>
           </Grid.Col>

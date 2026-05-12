@@ -5,7 +5,7 @@ export const SITE_SHORT_NAME = "Thompson Lorena";
 export const SITE_DESCRIPTION =
   "Acompañamiento psicológico profesional con enfoque humano: counseling, desarrollo personal y bienestar. Sesiones virtuales y presenciales en Microcentro, CABA.";
 
-export const INSTAGRAM_URL = "https://www.instagram.com/ticonsultorapsicologica/";
+export const INSTAGRAM_URL = "https://www.instagram.com/tlconsultorapsicologica/";
 export const WHATSAPP_URL = "https://wa.me/5491123663477";
 
 function withHttps(urlOrHost: string): string {
