@@ -4,7 +4,15 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "@mantine/core/styles.css";
 import "./globals.css";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_SHORT_NAME, getSiteUrl } from "@/lib/seo";
+import {
+  GOOGLE_SITE_VERIFICATION,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_SHORT_NAME,
+  getCanonicalRoot,
+  getSiteUrl,
+} from "@/lib/seo";
 import { Providers } from "./providers";
 
 const manrope = Manrope({
@@ -24,6 +32,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 const siteUrl = getSiteUrl();
+const canonicalRoot = getCanonicalRoot();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,20 +42,8 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_SHORT_NAME,
-  keywords: [
-    "psicóloga",
-    "consultora psicológica",
-    "counseling",
-    "Buenos Aires",
-    "CABA",
-    "Microcentro",
-    "terapia",
-    "sesiones virtuales",
-    "desarrollo personal",
-    "bienestar emocional",
-    "Thompson Lorena",
-  ],
-  authors: [{ name: "Lorena Thompson", url: siteUrl }],
+  keywords: SITE_KEYWORDS,
+  authors: [{ name: "Lorena Thompson", url: canonicalRoot }],
   creator: "Lorena Thompson",
   publisher: "Lorena Thompson",
   formatDetection: {
@@ -57,7 +54,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_AR",
-    url: "/",
+    alternateLocale: ["es_ES", "es"],
+    url: canonicalRoot,
     siteName: SITE_SHORT_NAME,
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
@@ -79,17 +77,19 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "/",
+    canonical: canonicalRoot,
+    languages: {
+      es: canonicalRoot,
+      "es-AR": canonicalRoot,
+      "es-ES": canonicalRoot,
+      "x-default": canonicalRoot,
+    },
   },
   category: "health",
   referrer: "origin-when-cross-origin",
-  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-    ? {
-        verification: {
-          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-        },
-      }
-    : {}),
+  verification: {
+    google: GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 export const viewport: Viewport = {
@@ -109,14 +109,12 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es-AR"
+      lang="es"
       className={`${manrope.variable} ${cormorant.variable}`}
       {...mantineHtmlProps}
     >
       <head>
         <ColorSchemeScript defaultColorScheme="light" />
-        <link rel="preconnect" href="https://assets.calendly.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://calendly.com" />
       </head>
       <body>
         <SiteJsonLd />
