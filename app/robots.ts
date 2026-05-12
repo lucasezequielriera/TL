@@ -1,14 +1,13 @@
 import type { MetadataRoute } from "next";
-import { getSiteUrl } from "@/lib/seo";
+import { LIVE_SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
-  const base = getSiteUrl();
+  const origin = LIVE_SITE_URL.replace(/\/$/, "");
   return {
     rules: {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: `${base}/sitemap.xml`,
-    host: new URL(base).host,
+    sitemap: `${origin}/sitemap.xml`,
   };
 }

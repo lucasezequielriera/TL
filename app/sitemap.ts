@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
-import { getSiteUrl } from "@/lib/seo";
+import { LIVE_SITE_URL } from "@/lib/seo";
 
+/**
+ * URLs absolutas del sitemap (siempre el dominio público).
+ * Así Google y otras herramientas leen entradas válidas aunque el build sea en preview.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = getSiteUrl();
-  const home = base.replace(/\/$/, "");
+  const origin = LIVE_SITE_URL.replace(/\/$/, "");
   return [
     {
-      url: home,
+      url: `${origin}/`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
