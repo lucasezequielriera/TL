@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Video maestro (muy pesado para git/deploy). Versión servida: presentacion-web.mp4
+/public/presentacion.mp4

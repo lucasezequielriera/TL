@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   Accordion,
@@ -19,6 +20,7 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { PRESENTACION_POSTER_SRC, PRESENTACION_VIDEO_SRC } from "@/lib/media";
 import { INSTAGRAM_URL, WHATSAPP_URL } from "@/lib/seo";
 import {
   IconBrandInstagram,
@@ -28,6 +30,7 @@ import {
   IconLeaf,
   IconMapPin,
   IconMessageCircleHeart,
+  IconPlayerPlayFilled,
   IconSparkles,
   IconStarFilled,
   IconUsersGroup,
@@ -107,15 +110,15 @@ const TESTIMONIOS = [
 const FAQ_ITEMS = [
   {
     q: "¿Qué es el Counseling o Consultoría Psicológica?",
-    a: "El Counseling es una disciplina que brinda acompañamiento profesional mediante la escucha activa, la reflexión y el apoyo emocional. Se enfoca en personas sanas que buscan superar bloqueos, desarrollar sus potenciales o atravesar procesos de cambio, centrándose siempre en el momento presente ('El poder de transformación está en el HOY')",
+    a: "El Counseling es una disciplina que brinda acompañamiento profesional mediante la escucha activa, la reflexión y el apoyo emocional. Se enfoca en personas que buscan superar bloqueos, desarrollar sus potenciales o atravesar procesos de cambio, centrándose siempre en el momento presente ('El poder de transformación está en el HOY')",
   },
   {
     q: "¿Cómo es la modalidad de las sesiones?",
-    a: "Podés elegir modalidad virtual o presencial. Se acuerda según tu disponibilidad y objetivos.",
+    a: "Podés elegir la modalidad virtual. Se acuerda según tu disponibilidad y objetivos.",
   },
   {
     q: "¿Cuánto dura el proceso de acompañamiento?",
-    a: "El tiempo de acompañamiento es único para cada persona. Mi filosofía de trabajo se basa en la premisa 'Tu proceso, tu ritmo'. No hay fórmulas ríidas, trabajaremos juntos el tiempo que necesites para potenciar tus recursos y alcanzar el bienestar que buscás.",
+    a: "El tiempo de acompañamiento es único para cada persona. Mi filosofía de trabajo se basa en la premisa 'Tu proceso, tu ritmo'. No hay fórmulas mágicas, trabajaremos juntos el tiempo que necesites para potenciar tus recursos y alcanzar el bienestar que buscás.",
   },
 ];
 
@@ -164,6 +167,14 @@ function SectionShell({
 
 export default function Home() {
   const [menu, menuHandlers] = useDisclosure(false);
+  const [consultoraVideoPlaying, setConsultoraVideoPlaying] = useState(false);
+  const consultoraVideoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (consultoraVideoPlaying && consultoraVideoRef.current) {
+      void consultoraVideoRef.current.play().catch(() => {});
+    }
+  }, [consultoraVideoPlaying]);
 
   return (
     <Box component="main" mih="100vh" className="site-shell tl-page-root">
@@ -344,9 +355,7 @@ export default function Home() {
                   <VioletInTitle>tu destino.</VioletInTitle>
                 </Title>
                 <Text c="slate.6" lh={1.8} maw={610} style={{ overflowWrap: "anywhere" }}>
-                  Es el punto de partida para ser quien hoy decidas ser. Te ofrezco
-                  un espacio de escucha donde vas a desarrollar tus potenciales personales
-                  y mejorar tu bienestar emocional.
+                  ¿Sentís que tu pasado o tus circunstancias actuales definen tu futuro? A menudo nos convencemos de que las cosas "no son así", pero la realidad es que tenés el poder de transformar tu presente. Porque tu historia no es tu destino, es simplemente el lugar desde donde hoy podés elegir un camino diferente.
                 </Text>
                 <Stack gap="md" w="100%" hiddenFrom="sm">
                   <Button
@@ -438,7 +447,7 @@ export default function Home() {
               variant="light"
               leftSection={<IconSparkles size={12} />}
             >
-              El poder está en vos
+              La protagonista de la transformación, sos vos
             </Badge>
             <Title
               order={3}
@@ -449,11 +458,11 @@ export default function Home() {
               px={{ base: "xs", sm: 0 }}
               style={{ textWrap: "balance", overflowWrap: "anywhere" }}
             >
-              ¿Te animás a empezar este camino de{" "}
+              ¿Estás lista para el{" "}
               <VioletInTitle on="light">reencuentro</VioletInTitle>?
             </Title>
             <Text c="violetPop.1" ta="center" px={{ base: "xs", sm: 0 }} style={{ overflowWrap: "anywhere" }}>
-              Tu historia es el comienzo de lo que sigue. Tu voz está lista.
+              No se trata de olvidar lo que viviste, sino de aprender a vivir mejor con ello.<br></br>Hacé click en el botón de abajo y agendamos tu primera sesión. Es momento de que tu historia trabaje a tu favor.
             </Text>
             <Box w="100%" maw={rem(320)} mx="auto" mt="xs">
               <Button
@@ -493,15 +502,75 @@ export default function Home() {
                   borderRadius: rem(14),
                   overflow: "hidden",
                   boxShadow: "0 4px 20px rgba(103, 79, 163, 0.08)",
+                  background: "var(--mantine-color-slate-2)",
                 }}
               >
-                <Image
-                  src="/icono-lorena.jpg"
-                  alt="Lorena Thompson, consultora psicológica"
-                  fill
-                  sizes="(max-width: 768px) 260px, 280px"
-                  style={{ objectFit: "cover" }}
-                />
+                {consultoraVideoPlaying ? (
+                  <video
+                    ref={consultoraVideoRef}
+                    src={PRESENTACION_VIDEO_SRC}
+                    poster={PRESENTACION_POSTER_SRC}
+                    controls
+                    playsInline
+                    preload="none"
+                    title="Presentación — Lorena Thompson"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      background: "transparent",
+                    }}
+                  />
+                ) : (
+                  <>
+                    <Image
+                      src={PRESENTACION_POSTER_SRC}
+                      alt="Lorena Thompson, consultora psicológica — vista previa del video"
+                      fill
+                      sizes="(max-width: 768px) 260px, 280px"
+                      style={{ objectFit: "cover", pointerEvents: "none" }}
+                    />
+                    <Box
+                      component="button"
+                      type="button"
+                      onClick={() => setConsultoraVideoPlaying(true)}
+                      aria-label="Reproducir video de presentación"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        display: "grid",
+                        placeItems: "center",
+                        cursor: "pointer",
+                        border: "none",
+                        padding: 0,
+                        background:
+                          "linear-gradient(180deg, rgba(15,23,42,0.12) 0%, rgba(15,23,42,0.35) 100%)",
+                      }}
+                    >
+                      <Box
+                        style={{
+                          width: rem(56),
+                          height: rem(56),
+                          borderRadius: "50%",
+                          display: "grid",
+                          placeItems: "center",
+                          background: "rgba(255,255,255,0.92)",
+                          boxShadow:
+                            "0 8px 28px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(255,255,255,0.5)",
+                        }}
+                      >
+                        <IconPlayerPlayFilled
+                          size={28}
+                          color="var(--mantine-color-violetPop-7)"
+                          stroke={1.35}
+                          style={{ marginLeft: rem(3) }}
+                        />
+                      </Box>
+                    </Box>
+                  </>
+                )}
               </Box>
             </Paper>
           </Grid.Col>
@@ -528,9 +597,7 @@ export default function Home() {
               </VioletInTitle>
             </Title>
             <Text c="slate.6" lh={1.75} style={{ overflowWrap: "anywhere" }}>
-              Soy Lorena Thompson, consultora psicológica. Este espacio está pensado
-              para acompañarte de forma clara, humana y concreta en tus procesos de
-              cambio, vínculos y bienestar emocional.
+              Soy Lorena Thompson, y desde la Consultoría Psicológica, mi propósito es brindarte un espacio de escucha genuina y herramientas concretas. Mi enfoque humanista, está diseñado para que logres reencontrarte con tus propios recursos, superes esos bloqueos que te detienen y empieces a tomar acciones reales hacia el bienestar que buscás.
             </Text>
             <Grid mt="md" gap="sm">
               <Grid.Col span={{ base: 12, sm: 6 }}>
