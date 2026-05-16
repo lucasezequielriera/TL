@@ -20,7 +20,7 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { PRESENTACION_POSTER_SRC, PRESENTACION_VIDEO_SRC } from "@/lib/media";
+import { PRESENTACION_VIDEO_SRC } from "@/lib/media";
 import { INSTAGRAM_URL, WHATSAPP_URL } from "@/lib/seo";
 import {
   IconBrandInstagram,
@@ -171,10 +171,22 @@ export default function Home() {
   const consultoraVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (consultoraVideoPlaying && consultoraVideoRef.current) {
-      void consultoraVideoRef.current.play().catch(() => {});
+    const el = consultoraVideoRef.current;
+    if (!el) return;
+    if (consultoraVideoPlaying) {
+      void el.play().catch(() => {});
+    } else {
+      el.pause();
+      el.currentTime = 0;
     }
   }, [consultoraVideoPlaying]);
+
+  const showConsultoraFirstFrame = (video: HTMLVideoElement) => {
+    if (consultoraVideoPlaying) return;
+    if (video.readyState >= 1) {
+      video.currentTime = 0.001;
+    }
+  };
 
   return (
     <Box component="main" mih="100vh" className="site-shell tl-page-root">
@@ -505,71 +517,64 @@ export default function Home() {
                   background: "var(--mantine-color-slate-2)",
                 }}
               >
-                {consultoraVideoPlaying ? (
-                  <video
-                    ref={consultoraVideoRef}
-                    src={PRESENTACION_VIDEO_SRC}
-                    poster={PRESENTACION_POSTER_SRC}
-                    controls
-                    playsInline
-                    preload="none"
-                    title="Presentación — Lorena Thompson"
+                <video
+                  ref={consultoraVideoRef}
+                  src={PRESENTACION_VIDEO_SRC}
+                  playsInline
+                  preload="metadata"
+                  controls={consultoraVideoPlaying}
+                  muted={!consultoraVideoPlaying}
+                  title="Presentación — Lorena Thompson"
+                  onLoadedMetadata={(e) => showConsultoraFirstFrame(e.currentTarget)}
+                  onLoadedData={(e) => showConsultoraFirstFrame(e.currentTarget)}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    background: "transparent",
+                  }}
+                />
+                {!consultoraVideoPlaying && (
+                  <Box
+                    component="button"
+                    type="button"
+                    onClick={() => setConsultoraVideoPlaying(true)}
+                    aria-label="Reproducir video de presentación"
                     style={{
                       position: "absolute",
                       inset: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      background: "transparent",
+                      zIndex: 1,
+                      display: "grid",
+                      placeItems: "center",
+                      cursor: "pointer",
+                      border: "none",
+                      padding: 0,
+                      background:
+                        "linear-gradient(180deg, rgba(15,23,42,0.08) 0%, rgba(15,23,42,0.28) 100%)",
                     }}
-                  />
-                ) : (
-                  <>
-                    <Image
-                      src={PRESENTACION_POSTER_SRC}
-                      alt="Lorena Thompson, consultora psicológica — vista previa del video"
-                      fill
-                      sizes="(max-width: 768px) 260px, 280px"
-                      style={{ objectFit: "cover", pointerEvents: "none" }}
-                    />
+                  >
                     <Box
-                      component="button"
-                      type="button"
-                      onClick={() => setConsultoraVideoPlaying(true)}
-                      aria-label="Reproducir video de presentación"
                       style={{
-                        position: "absolute",
-                        inset: 0,
+                        width: rem(56),
+                        height: rem(56),
+                        borderRadius: "50%",
                         display: "grid",
                         placeItems: "center",
-                        cursor: "pointer",
-                        border: "none",
-                        padding: 0,
-                        background:
-                          "linear-gradient(180deg, rgba(15,23,42,0.12) 0%, rgba(15,23,42,0.35) 100%)",
+                        background: "rgba(255,255,255,0.92)",
+                        boxShadow:
+                          "0 8px 28px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(255,255,255,0.5)",
                       }}
                     >
-                      <Box
-                        style={{
-                          width: rem(56),
-                          height: rem(56),
-                          borderRadius: "50%",
-                          display: "grid",
-                          placeItems: "center",
-                          background: "rgba(255,255,255,0.92)",
-                          boxShadow:
-                            "0 8px 28px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(255,255,255,0.5)",
-                        }}
-                      >
-                        <IconPlayerPlayFilled
-                          size={28}
-                          color="var(--mantine-color-violetPop-7)"
-                          stroke={1.35}
-                          style={{ marginLeft: rem(3) }}
-                        />
-                      </Box>
+                      <IconPlayerPlayFilled
+                        size={28}
+                        color="var(--mantine-color-violetPop-7)"
+                        stroke={1.35}
+                        style={{ marginLeft: rem(3) }}
+                      />
                     </Box>
-                  </>
+                  </Box>
                 )}
               </Box>
             </Paper>

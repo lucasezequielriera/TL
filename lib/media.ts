@@ -6,5 +6,3 @@
  */
 export const PRESENTACION_VIDEO_SRC =
   process.env.NEXT_PUBLIC_PRESENTACION_VIDEO_URL?.trim() || "/presentacion-web.mp4";
-
-export const PRESENTACION_POSTER_SRC = "/icono-lorena.jpg";
